@@ -14,14 +14,15 @@ def homepage(request):
 
 @csrf_exempt
 def taskcreate(request):
-    Users = User.objects.all()
-    if request.method == "POST":
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("main:homePage")
-    else:
-        form = TaskForm()
+    if request.user.is_autenticated == True:
+        Users = User.objects.all()
+        if request.method == "POST":
+            form = TaskForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect("main:homePage")
+        else:
+            form = TaskForm()
     return render(request, "taskmanager/task-create.html", {
         'form': form,
         'Users': Users
@@ -29,20 +30,22 @@ def taskcreate(request):
 
 @csrf_exempt
 def taskedit(request, task_id):
-    task = Task.objects.get(pk=task_id)
-    if request.method == "POST":
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect("main:homePage")
-    else:
-        form = TaskForm(instance=task)
+    if request.user.is_autenticated == True:
+        task = Task.objects.get(pk=task_id)
+        if request.method == "POST":
+            form = TaskForm(request.POST, instance=task)
+            if form.is_valid():
+                form.save()
+                return redirect("main:homePage")
+        else:
+            form = TaskForm(instance=task)
     return render(request, "taskmanager/task-edit.html", {
         'form': form,
     })
 
 @csrf_exempt
 def taskdelete(request, task_id):
-    task = Task.objects.get(pk=task_id)
-    task.delete()
+    if request.user.is_autenticated == True:
+        task = Task.objects.get(pk=task_id)
+        task.delete()
     return redirect("main:homePage")

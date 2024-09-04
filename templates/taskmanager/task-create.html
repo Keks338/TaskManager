@@ -4,6 +4,7 @@
 {% block title %}Создание задачи{% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container mx-auto py-8">
     <div class="card bg-white shadow-lg rounded-lg overflow-hidden" style="margin: 20px;">
         <div class="card-body p-6">
@@ -37,4 +38,19 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="pop-up-background-files fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+    <div class="pop-up-card-login" style="padding-top: 1%;">
+        <center style="margin-bottom: 5%;">
+            <h2 style="display: inline-block;">!!ТРЕБУЕТСЯ ВХОД!!</h2>
+        </center>
+        <center>
+            <a href="{% url "users:loginPage" %}" class="btn btn-primary" style="width: 50%; margin-bottom: 10%;">ВХОД</a>
+        </center>
+        <center>
+            <a href="{% url "users:signUp" %}" class="btn btn-primary" style="width: 50%;">РЕГИСТРАЦИЯ</a>
+        </center>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
