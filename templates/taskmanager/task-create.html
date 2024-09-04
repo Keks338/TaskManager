@@ -1,0 +1,40 @@
+{% extends "../base.html" %}
+{% load static %}
+{% load tailwind_filters %}
+{% block title %}Создание задачи{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <div class="card bg-white shadow-lg rounded-lg overflow-hidden" style="margin: 20px;">
+        <div class="card-body p-6">
+            <h2 class="text-2xl font-bold mb-5">Добавить задачу</h2>
+            <form method="post">
+                <div id="div_id_title" class="mb-3"> 
+                    <label for="id_title" class="block text-gray-700 text-sm font-bold mb-2">Title<span class="asteriskField">*</span></label>
+                    <input type="text" name="title" maxlength="255" class="textinput text-gray-700 py-2 border-gray-300 focus:outline-none appearance-none leading-normal block bg-white border rounded-lg px-4 w-full" required="" id="id_title">
+                </div>
+                <div id="div_id_description" class="mb-3"> 
+                    <label for="id_description" class="block text-gray-700 text-sm font-bold mb-2">Description<span class="asteriskField">*</span></label> 
+                    <textarea name="description" cols="40" rows="10" class="textarea text-gray-700 py-2 border-gray-300 focus:outline-none appearance-none leading-normal block bg-white border rounded-lg px-4 w-full" required="" id="id_description"></textarea> 
+                </div>
+                <div id="div_id_creator" class="mb-3"> <label for="id_creator" class="block text-gray-700 text-sm font-bold mb-2">Creator<span class="asteriskField">*</span> </label> 
+                    <div class="mb-3"> 
+                        <div class="relative">
+                            <!-- <select class="border border-red-500 bg-white focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700" name="creator"> <option value="">---------</option> <option value="1">kboch</option> <option value="2">Keks338</option> </select> -->
+                            <select class="bg-white focus:outline-none border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal text-gray-700" name="creator"> {% if user.is_superuser %}{% for User in Users %}<option value="{{ User.id }}">{{ User.username }}</option>{% endfor %}{% else %}<option value="{{ user.id }}">{{ user.username }}</option>{% endif %}</select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"> 
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path> </svg> 
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div class="flex justify-end mt-6">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                        Cоздать
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

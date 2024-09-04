@@ -1,0 +1,48 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Управление задачами{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+<div class="pt-16 w-full">
+    <div class="w-screen">
+        <div class="card bg-[#4d4d4d] shadow-lg rounded-b-none overflow-hidden" style="margin-top: 20px; margin-left: 20px; margin-right: 20px;">
+            <div class="card-body p-6">
+                <h2 class="normal-case text-xl" style="color: #fff; font-weight: 600;">Список задач 
+                    <a href="{% url "main:newTask" %}" class="btn btn-ghost"><i class="fa-light fa-plus fa-2xl"></i></a>
+                </h2>
+            </div>
+        </div>
+        <div class="card bg-white shadow-lg rounded-t-none overflow-hidden" style="margin-bottom: 20px; margin-left: 20px; margin-right: 20px;">
+            <div class="card-body p-0" style="padding-bottom: 10px;">
+                {% for Task in Tasks %}
+                <div class="grid grid-cols-6" style="border-bottom: 1px solid black;">
+                    <center><h1>{{ Task.id }}</h1></center>
+                    <h2 style="padding-left: 6px;">{{ Task.title }}</h2>
+                    <p>{{ Task.description }}</p>
+                    <p>Создал <b>{{ Task.creator.username }}</b> {{ Task.created_at }}</p>
+                    <a href="{% url "main:taskEdit" task_id=Task.id %}" class="btn btn-primary">РЕДАКТИРОВАТЬ</a>
+                    <a href="{% url "main:taskDelete" task_id=Task.id %}" class="btn btn-error">УДАЛИТЬ</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="pop-up-background-files fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+    <div class="pop-up-card-login" style="padding-top: 1%;">
+        <center style="margin-bottom: 5%;">
+            <h2 style="display: inline-block;">!!ТРЕБУЕТСЯ ВХОД!!</h2>
+        </center>
+        <center>
+            <a href="{% url "users:loginPage" %}" class="btn btn-primary" style="width: 50%; margin-bottom: 10%;">ВХОД</a>
+        </center>
+        <center>
+            <a href="{% url "users:signUp" %}" class="btn btn-primary" style="width: 50%;">РЕГИСТРАЦИЯ</a>
+        </center>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
